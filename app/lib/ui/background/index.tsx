@@ -1,2 +1,1 @@
-
-export {default} from './background'
+export {default} from './background';

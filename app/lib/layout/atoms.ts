@@ -1,7 +1,7 @@
-import {Platform} from 'react-native'
+import {Platform} from 'react-native';
 
-import * as tokens from './token'
-import {native, web} from './util/platform'
+import * as tokens from './token';
+import {native, web} from './util/platform';
 
 export const atoms = {
   /*
@@ -130,6 +130,15 @@ export const atoms = {
   },
   flex_1: {
     flex: 1,
+  },
+  flex_2: {
+    flex: 2,
+  },
+  flex_3: {
+    flex: 3,
+  },
+  flex_4: {
+    flex: 4,
   },
   flex_grow: {
     flexGrow: 1,
@@ -840,4 +849,4 @@ export const atoms = {
   mr_auto: {
     marginRight: 'auto',
   },
-} as const
+} as const;

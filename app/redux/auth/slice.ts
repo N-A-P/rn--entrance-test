@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {signUpAndSignIn} from './actions';
-import {SignInResponse} from '../../services/auth';
+import {SignInResponse} from '../../services/http/auth';
 
 export type AuthState = Omit<SignInResponse, 'user'> & {
   user: null | SignInResponse['user'];

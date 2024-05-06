@@ -1,15 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text as RNText, TextProps} from 'react-native';
-import {  color } from '../../layout/token';
+import {color} from '../../layout/token';
 
 export type MyTextProps = TextProps & {
   level: 'h1' | 'body' | 'subscript' | 'button';
   color?: string;
 };
 
-const Text: React.FC<MyTextProps> = (props) => {
-  const _color = props.color || color.TEXT_GRAY
-  
+const Text: React.FC<MyTextProps> = props => {
+  const _color = props.color || color.TEXT_GRAY;
+
   return (
     <RNText
       {...props}
@@ -18,7 +18,6 @@ const Text: React.FC<MyTextProps> = (props) => {
     </RNText>
   );
 };
-
 
 export default Text;
 

@@ -1,2 +1,1 @@
-
-export {default} from './cb'
+export {default} from './cb';

@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { createRef } from 'react';
+import {createRef} from 'react';
 
-import { RootStackParamList } from './type';
+import {RootStackParamList} from './type';
 import {
   CommonActions,
   DrawerActions,
@@ -63,7 +62,7 @@ export function resetScreen<RouteName extends keyof RootStackParamList>(
   navigationRef.current?.dispatch(
     CommonActions.reset({
       index: 0,
-      routes: [{ name: arg[0], params: arg.length > 1 ? arg[1] : undefined }],
+      routes: [{name: arg[0], params: arg.length > 1 ? arg[1] : undefined}],
     }),
   );
 }

@@ -1,6 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {ListState} from '../../types';
 import {getCategoryList} from './actions';
+type FetchStatus = 'success' | 'error' | 'loading' | 'new';
+type ListState<I> = {
+  data: I[];
+  status: FetchStatus;
+  message: string;
+};
 
 export type Category = {
   id: number;

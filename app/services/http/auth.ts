@@ -3,25 +3,14 @@ import {PublicApi} from './base';
 export type SignUpPayload = {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 };
-export type SignUpOpts =
-  | Partial<{
-      firstName: string;
-      lastName: string;
-    }>
-  | undefined;
-
-const signUp = async (
-  payload: SignUpPayload,
-  opts: SignUpOpts = {
-    firstName: 'Tester',
-    lastName: 'Mr',
-  },
-) => {
-  const response = await PublicApi.post('auth/signup', {
-    ...opts,
-    ...payload,
-  });
+const signUp = async (payload: SignUpPayload) => {
+  const response = await PublicApi.post('/auth/signup', payload);
+  if (!response.ok) {
+    throw response.data;
+  }
   return response?.data;
 };
 
@@ -43,7 +32,10 @@ export type SignInResponse = {
   refreshToken: string;
 };
 const signIn = async (payload: SignInPayload) => {
-  const response = await PublicApi.post('auth/signup', payload);
+  const response = await PublicApi.post('/auth/signin', payload);
+  if (!response.ok) {
+    throw response.data;
+  }
   return response?.data as SignInResponse;
 };
 

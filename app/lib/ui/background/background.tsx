@@ -1,17 +1,24 @@
 import React from 'react';
 import {Image, ImageProps, StyleSheet, useWindowDimensions} from 'react-native';
 
-type BackgroundProps = ImageProps;
+type BackgroundProps = ImageProps & {
+  bgScale?: number;
+};
 
-const Background: React.FC<BackgroundProps> = props => {
+const Background: React.FC<BackgroundProps> = ({
+  bgScale = 1,
+  source,
+  style,
+}) => {
   const dimension = useWindowDimensions();
-  const imageSize = Image.resolveAssetSource(props.source!);
-  const scaledHeight = (dimension.width / imageSize.width) * imageSize.height;
+  const imageSize = Image.resolveAssetSource(source!);
+  const scaledHeight =
+    (dimension.width / imageSize.width) * imageSize.height * bgScale;
 
   return (
     <Image
-      style={[styles.image, {height: scaledHeight}, props?.style]}
-      {...props}
+      style={[styles.image, {height: scaledHeight}, style]}
+      source={source}
     />
   );
 };
@@ -25,7 +32,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     width: '100%',
-    resizeMode: 'stretch',
-    zIndex: 0
+    // resizeMode: 'stretch',
+    zIndex: 0,
   },
 });
