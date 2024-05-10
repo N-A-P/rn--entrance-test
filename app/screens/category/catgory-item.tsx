@@ -3,6 +3,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Text from '../../lib/ui/text';
 import {Category} from '../../redux/category/slice';
 import React from 'react';
+import {atoms} from '../../lib/layout/atoms';
 
 type Props = {
   item: Category;
@@ -33,7 +34,7 @@ export const CategoryItem = ({item: {name, id}, onSelect, isPicked}: Props) => {
             : ['rgba(0,0,0,1)', 'rgba(0,0,0,1)']
         }
         useAngle
-        angle={45}
+        angle={0}
         locations={[0, 0.6]}
         style={styles.background}>
         <Text level="body" style={styles.title}>
@@ -61,26 +62,19 @@ export function CategoryRow(props: CateRowProps) {
           {index !== props.data.length && <View style={styles.separator} />}
         </React.Fragment>
       ))}
-      {/* <FlatList
-        data={props.data}
-        horizontal
-        style={styles.row}
-        // contentContainerStyle={styles.row}
-        keyExtractor={(_, id) => id.toString() }
-        ItemSeparatorComponent={() =><View style={styles.separator} />}
-        renderItem={({item}) =>
-          <CategoryItem
-           isPicked={props.selected.includes(item.id)}
-           onSelect={props.onSelect} item={item} />
-        }
-      /> */}
+      {props.data.length === 1 && (
+        <>
+          <View style={atoms.flex_1} />
+          <View style={atoms.flex_1} />
+        </>
+      )}
+      {props.data.length === 2 && <View style={atoms.flex_1} />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 15,
     flex: 1,
   },
   separator: {
@@ -95,9 +89,11 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     height: 60,
-    borderRadius: 15,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.22)',
   },
   title: {textAlign: 'center'},
 });

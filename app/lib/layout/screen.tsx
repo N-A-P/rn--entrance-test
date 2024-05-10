@@ -16,20 +16,18 @@ export default function ScreenWrapper({
   bg,
   disableDismissKeyboard,
   bgScale,
+  disableShadow,
 }: {
   children: React.ReactNode;
   statusBar?: StatusBarProps;
   bg?: number;
   bgScale?: number;
   disableDismissKeyboard?: boolean;
+  disableShadow?: boolean;
 }) {
   // const inset = useSafeAreaInsets()
   return (
     <>
-      {/* <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'position': undefined}
-      style={atoms.flex_1}
-      keyboardVerticalOffset={0}> */}
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
@@ -40,14 +38,17 @@ export default function ScreenWrapper({
       <TouchableWithoutFeedback
         disabled={disableDismissKeyboard}
         onPress={Keyboard.dismiss}>
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.8)', 'rgba(0,0,0,1)']}
-          locations={[0, 0.4, 0.6]}
-          style={atoms.flex_1}>
-          {children}
-        </LinearGradient>
+        {disableShadow ? (
+          children
+        ) : (
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.8)', 'rgba(0,0,0,1)']}
+            locations={[0, 0.4, 0.6]}
+            style={atoms.flex_1}>
+            {children}
+          </LinearGradient>
+        )}
       </TouchableWithoutFeedback>
-      {/* </KeyboardAvoidingView> */}
     </>
   );
 }

@@ -155,6 +155,9 @@ export const atoms = {
   justify_between: {
     justifyContent: 'space-between',
   },
+  justify_around: {
+    justifyContent: 'space-around',
+  },
   justify_end: {
     justifyContent: 'flex-end',
   },

@@ -23,6 +23,7 @@ export function useLogin(username: string, password: string, overAge: boolean) {
 
   const isValidUsername = useMemo(() => {
     // copy from internet ^^!
+    // this should cover required email validation rule
     const emailRegex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -30,6 +31,7 @@ export function useLogin(username: string, password: string, overAge: boolean) {
   }, [username]);
 
   const isValidPass = useMemo(() => {
+    // this should also cover required password validation rule
     return !(password.length < 6 || password.length > 18);
   }, [password]);
 

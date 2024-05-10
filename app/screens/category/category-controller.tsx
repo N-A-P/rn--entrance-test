@@ -1,6 +1,8 @@
 import {useEffect, useMemo, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {getCategoryList} from '../../redux/category/actions';
+import {save} from '../../services/storage';
+import {navigateScreen} from '../../navigation/navigation-service';
 
 function transformTo2DArray<T = any>(arr: T[], itemsPerSubArray: number) {
   const twoDArray = [];
@@ -31,10 +33,16 @@ export function useCategoryController() {
     dispatch(getCategoryList());
   }, []);
 
+  const onPressDone = () => {
+    save('categories', selected);
+    navigateScreen('mainscreen');
+  };
+
   const categories = useMemo(() => transformTo2DArray(data, 3), [data]);
   return {
     categories,
     selected,
     onSelect,
+    onPressDone,
   };
 }

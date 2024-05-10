@@ -8,7 +8,7 @@ export type MyTextProps = TextProps & {
 };
 
 const Text: React.FC<MyTextProps> = props => {
-  const _color = props.color || color.TEXT_GRAY;
+  const _color = props.color || color.TEXT_LIGHT;
 
   return (
     <RNText

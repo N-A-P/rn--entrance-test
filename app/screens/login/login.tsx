@@ -8,12 +8,13 @@ import {
 } from 'react-native';
 import ScreenWrapper from '../../lib/layout/screen';
 import {atoms} from '../../lib/layout/atoms';
-import TextInput from '../../lib/ui/text-input/text-input';
+import TextInput from '../../lib/ui/text-input';
 import {color} from '../../lib/layout/token';
 import Text from '../../lib/ui/text';
 import CheckBox from '../../lib/ui/checkbox';
 import {useLoginController} from './login-controller';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export default function LoginScreen() {
   const {
@@ -37,28 +38,35 @@ export default function LoginScreen() {
   const [enablePeakPassword, setPeakPassword] = useState(true);
   const togglePeakPassword = () => setPeakPassword(v => !v);
   const inset = useSafeAreaInsets();
+
   return (
-    <ScreenWrapper bg={require('../../../assets/images/bg1.png')}>
+    <ScreenWrapper
+      bgScale={1.15}
+      bg={require('../../../assets/images/bg1.png')}>
       <View
         style={[
-          atoms.flex_1,
           atoms.justify_between,
-          atoms.px_lg,
-          {marginTop: inset.top},
+          atoms.px_xl,
+          {marginTop: inset.top + atoms.pt_md.paddingTop},
         ]}>
         <Pressable>
           <Image source={require('../../../assets/images/arrow.png')} />
         </Pressable>
-        <Text level="h1">Let's get you started</Text>
       </View>
-      <View style={[atoms.flex_2, atoms.px_lg, atoms.mt_5xl]}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={[atoms.justify_end, atoms.flex_1, atoms.px_xl]}>
+        <View style={atoms.mb_2xl}>
+          <Text level="h1">Let's get you started!</Text>
+        </View>
         <TextInput
           autoComplete="email"
           autoCapitalize="none"
           autoCorrect={false}
           value={username}
           error={usernameError}
+          keyboardType="email-address"
           errorColor={color.ERROR}
+          returnKeyType="next"
           underline={
             <View
               style={{
@@ -69,20 +77,22 @@ export default function LoginScreen() {
             />
           }
           onChangeText={onChangeUsername}
-          label="Username"
+          label="Your email"
           onBlur={onBlurUsername}
         />
         <TextInput
           autoComplete="password"
           autoCorrect={false}
           autoCapitalize="none"
-          label="Password"
+          label="Your password"
           maxLength={16}
           error={passwordStrength?.text}
           errorColor={passwordStrength?.color}
           onChangeText={onChangePass}
           onBlur={onBlurPass}
+          // keyboardType='visible-password'
           value={password}
+          returnKeyType="go"
           secureTextEntry={enablePeakPassword}
           icon={
             <Pressable
@@ -111,7 +121,7 @@ export default function LoginScreen() {
             )
           }
         />
-        <View style={[atoms.my_3xl]}>
+        <View style={[atoms.my_4xl]}>
           <CheckBox
             value={overAge}
             onToggle={toggleOverAge}
@@ -120,28 +130,35 @@ export default function LoginScreen() {
           />
         </View>
         <PolicyStatement />
-      </View>
-      <View
-        style={[
-          atoms.px_lg,
-          atoms.flex_row,
-          atoms.align_center,
-          atoms.justify_between,
-          {marginBottom: inset.bottom},
-        ]}>
-        <Text level="h1">Sign Up</Text>
-        <NextButton
-          loading={loading}
-          disabled={!isValidForm}
-          onPress={onSubmit}
-        />
-      </View>
+
+        <View
+          style={[
+            atoms.flex_row,
+            atoms.align_center,
+            atoms.justify_between,
+            atoms.mt_2xl,
+            {marginBottom: inset.bottom + atoms.pb_md.paddingBottom},
+          ]}>
+          <Text style={[atoms.font_semibold]} level="button">
+            Sign Up
+          </Text>
+          <NextButton
+            loading={loading}
+            disabled={!isValidForm}
+            onPress={onSubmit}
+          />
+        </View>
+      </KeyboardAwareScrollView>
     </ScreenWrapper>
   );
 }
-function NextButton({loading, ...props}: PressableProps & {loading: boolean}) {
+function NextButton({
+  loading,
+  disabled,
+  ...props
+}: PressableProps & {loading: boolean}) {
   return (
-    <Pressable {...props}>
+    <Pressable {...props} disabled={disabled}>
       <View
         style={{
           borderRadius: 25,
@@ -151,6 +168,7 @@ function NextButton({loading, ...props}: PressableProps & {loading: boolean}) {
           height: 50,
           justifyContent: 'center',
           alignItems: 'center',
+          opacity: disabled ? 0.5 : 1,
         }}>
         {loading ? (
           <ActivityIndicator color={color.PRIMARY} size="small" />
@@ -165,7 +183,7 @@ function NextButton({loading, ...props}: PressableProps & {loading: boolean}) {
 function PolicyStatement() {
   return (
     <View style={[atoms.my_md]}>
-      <Text level="subscript">
+      <Text level="subscript" color={color.TEXT_GRAY}>
         {
           'By clicking Sign Up, you are indicating that you have read and agree to the '
         }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Image, View} from 'react-native';
+import {FlatList, Image, Pressable, View} from 'react-native';
 import ScreenWrapper from '../../lib/layout/screen';
 import {atoms} from '../../lib/layout/atoms';
 import Text from '../../lib/ui/text';
@@ -10,7 +10,7 @@ function Spacer() {
   return <View style={atoms.pt_md} />;
 }
 export default function CategoryScreen() {
-  const {categories, onSelect, selected} = useCategoryController();
+  const {categories, onSelect, selected, onPressDone} = useCategoryController();
   const inset = useSafeAreaInsets();
   return (
     <ScreenWrapper bgScale={0.8} bg={require('../../../assets/images/bg2.png')}>
@@ -24,17 +24,22 @@ export default function CategoryScreen() {
           ]}>
           <View style={[atoms.flex_row, atoms.justify_between]}>
             <Image source={require('../../../assets/images/arrow.png')} />
-            <Text style={atoms.font_bold} level="body">
-              Done
-            </Text>
+            {selected.length > 0 && (
+              <Pressable onPress={onPressDone}>
+                <Text style={atoms.font_bold} level="body">
+                  Done
+                </Text>
+              </Pressable>
+            )}
           </View>
           <View>
             <Text style={atoms.font_bold} level="h1">
               Wellcome to Nexle Entrance Test
             </Text>
-            <Text style={atoms.mt_md} level="body">
-              Please select categories what you would like to see on your feed.
-              You can set this later on Filter.
+            <Text style={[atoms.mt_md, atoms.text_sm]} level="body">
+              {
+                'Please select categories what you would like to\nsee on your feed. You can set this later on Filter.'
+              }
             </Text>
           </View>
         </View>

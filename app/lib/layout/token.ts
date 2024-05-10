@@ -23,7 +23,7 @@ const PRIMARY = '#647FFF';
 const SECONDARY = '#434343';
 
 const TEXT_LIGHT = '#FFFFFF';
-const TEXT_GRAY = '#FFFFFFF0';
+const TEXT_GRAY = 'rgba(255,255,255,0.5)';
 
 const SUCCESS = '#91E2B7';
 const WARNING = '#E3A063';

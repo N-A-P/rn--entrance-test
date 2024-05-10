@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {forwardRef, useEffect} from 'react';
 import {
   TextInput as RNTextInput,
   Animated,
@@ -24,84 +24,84 @@ type Props = {
 } & TextInputProps;
 
 const LABEL_Y = 50;
-export default function TextInput({
-  label,
-  error,
-  icon,
-  underline,
-  errorColor,
-  ...props
-}: Props) {
-  const labelY = useRef(new Animated.Value(LABEL_Y)).current; // Initial value for opacity: 0
-  const valRef = useRef('');
-  const errorHeight = useRef(new Animated.Value(0)).current;
+const TextInput = forwardRef(
+  (
+    {label, error, icon, underline, errorColor, ...props}: Props,
+    ref: React.ForwardedRef<RNTextInput>,
+  ) => {
+    const labelY = useRef(new Animated.Value(LABEL_Y)).current; // Initial value for opacity: 0
+    const valRef = useRef('');
+    const errorHeight = useRef(new Animated.Value(0)).current;
 
-  const onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    props.onBlur?.(e);
-    if (valRef.current.length > 0) {
-      return;
-    }
-    Animated.timing(labelY, {
-      toValue: LABEL_Y,
-      duration: 150,
-      useNativeDriver: true,
-      easing: Easing.cubic,
-    }).start();
-  };
+    const onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      props.onBlur?.(e);
+      if (valRef.current.length > 0) {
+        return;
+      }
+      Animated.timing(labelY, {
+        toValue: LABEL_Y,
+        duration: 150,
+        useNativeDriver: true,
+        easing: Easing.cubic,
+      }).start();
+    };
 
-  const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    Animated.timing(labelY, {
-      toValue: 15,
-      duration: 200,
-      useNativeDriver: true,
-      easing: Easing.exp,
-    }).start();
-    props.onFocus?.(e);
-  };
-  const onChangeText = (v: string) => {
-    props.onChangeText?.(v);
-    valRef.current = v;
-  };
+    const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+      Animated.timing(labelY, {
+        toValue: 15,
+        duration: 200,
+        useNativeDriver: true,
+        easing: Easing.exp,
+      }).start();
+      props.onFocus?.(e);
+    };
+    const onChangeText = (v: string) => {
+      props.onChangeText?.(v);
+      valRef.current = v;
+    };
 
-  useEffect(() => {
-    let value = 0;
-    if (error && error.length > 0) {
-      value = 20;
-    }
+    useEffect(() => {
+      let value = 0;
+      if (error && error.length > 0) {
+        value = 20;
+      }
 
-    Animated.timing(errorHeight, {
-      toValue: value,
-      duration: 200,
-      useNativeDriver: false,
-      isInteraction: true,
-    }).start();
-  }, [error]);
+      Animated.timing(errorHeight, {
+        toValue: value,
+        duration: 200,
+        useNativeDriver: false,
+        isInteraction: true,
+      }).start();
+    }, [error]);
 
-  return (
-    <View>
-      <Animated.Text style={[style.lb, {transform: [{translateY: labelY}]}]}>
-        {label}
-      </Animated.Text>
+    return (
       <View>
-        <RNTextInput
-          style={style.ip}
-          {...props}
-          onChangeText={onChangeText}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-        {underline && <View style={style.underline}>{underline}</View>}
-        {icon}
+        <Animated.Text style={[style.lb, {transform: [{translateY: labelY}]}]}>
+          {label}
+        </Animated.Text>
+        <View>
+          <RNTextInput
+            ref={ref}
+            style={style.ip}
+            {...props}
+            onChangeText={onChangeText}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+          {underline && <View style={style.underline}>{underline}</View>}
+          {icon}
+        </View>
+        <Animated.View
+          style={[atoms.self_end, atoms.mt_md, {height: errorHeight}]}>
+          <Text level="body" color={errorColor}>
+            {error}
+          </Text>
+        </Animated.View>
       </View>
-      <Animated.View
-        style={[atoms.self_end, atoms.mt_md, {height: errorHeight}]}>
-        <Text level="body" color={errorColor}>
-          {error}
-        </Text>
-      </Animated.View>
-    </View>
-  );
-}
+    );
+  },
+);
+export default TextInput;
 const style = StyleSheet.create({
   ip: {
     paddingVertical: 10,
